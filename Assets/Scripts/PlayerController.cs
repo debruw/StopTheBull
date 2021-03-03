@@ -4,23 +4,39 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public int NeededPeopleCount;
+    int currentPeopleCount;
+
     Touch touch;
     Vector2 firstPressPos;
     public float m_moveSpeed = 10;
+    float moveStep;
     private Vector3 translation;
     public float Xspeed = 25f, limit;
     public GameObject cylinderPrefab; //assumed to be 1m x 1m x 2m default unity cylinder to make calculations easy
     public List<GameObject> SpawnPoints;
-    public int PeopleCount;
     public GameObject World;
+    public ParticleSystem DustParticle1, DustParticle2;
+    public List<People> CollectedPeoples;
 
     private void Start()
     {
         GetComponentInChildren<Animator>().SetTrigger("HoldRope");
+        moveStep = m_moveSpeed / (float)NeededPeopleCount;
     }
 
     void Update()
     {
+        if (!GameManager.Instance.isGameStarted || GameManager.Instance.isGameOver)
+        {
+            return;
+        }
+        if (!DustParticle1.isPlaying)
+        {
+            DustParticle1.Play();
+            DustParticle2.Play();
+        }
+
         World.transform.position -= Vector3.forward * m_moveSpeed * Time.deltaTime;
 
 #if UNITY_EDITOR
@@ -53,20 +69,51 @@ public class PlayerController : MonoBehaviour
 
     int rand;
     public GameObject particlePuff;
+    ParticleSystem[] Dusts;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("People"))
         {
             rand = Random.Range(0, SpawnPoints.Count);
             Instantiate(particlePuff, other.transform.position, Quaternion.identity);
-            other.gameObject.transform.parent = SpawnPoints[rand].transform;            
-            other.gameObject.transform.localPosition = Vector3.zero;
-            other.gameObject.GetComponentInChildren<ParticleSystem>().Play();
+            Instantiate(particlePuff, SpawnPoints[rand].transform.position, Quaternion.identity);
+
+            other.gameObject.transform.parent = SpawnPoints[rand].transform;
+            other.GetComponent<People>().HoldTheRope();
+            CollectedPeoples.Add(other.GetComponent<People>());
+
             CreateCylinderBetweenPoints(transform.position, new Vector3(SpawnPoints[rand].transform.position.x, .8f, SpawnPoints[rand].transform.position.z), .08f, SpawnPoints[rand].transform);
-            SpawnPoints.Remove(SpawnPoints[rand]);
-            other.gameObject.GetComponent<Collider>().enabled = false;
-            other.GetComponent<Animator>().SetTrigger("HoldRope");
-            PeopleCount++;
+            SpawnPoints.Remove(SpawnPoints[rand]);            
+            currentPeopleCount++;
+
+            StartCoroutine(ScaleSpeed(m_moveSpeed, m_moveSpeed - moveStep, 1));
+        }
+    }
+
+    IEnumerator ScaleSpeed(float start, float end, float time)
+    {
+        float lastTime = Time.realtimeSinceStartup;
+        float timer = 0.0f;
+
+        while (timer < time)
+        {
+            m_moveSpeed = Mathf.Lerp(start, end, timer / time);
+            timer += (Time.realtimeSinceStartup - lastTime);
+            lastTime = Time.realtimeSinceStartup;
+            yield return null;
+        }
+        m_moveSpeed = end;
+
+        if (m_moveSpeed <= 0)
+        {
+            DustParticle1.Stop();
+            DustParticle2.Stop();
+            foreach (People item in CollectedPeoples)
+            {
+                item.CloseDust();
+            }
+            StartCoroutine(GameManager.Instance.WaitAndGameWin());
+
         }
     }
 
