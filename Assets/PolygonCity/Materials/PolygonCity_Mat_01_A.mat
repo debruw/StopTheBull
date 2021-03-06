@@ -120,6 +120,7 @@ Material:
     - _Shadow_HSV_H: 0
     - _Shadow_HSV_S: 0
     - _Shadow_HSV_V: 0
+    - _Shininess: 0.32
     - _ShnIntense: 0
     - _ShnOverlap: 0
     - _ShnRange: 0.15

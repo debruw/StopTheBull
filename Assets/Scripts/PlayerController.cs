@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
     Touch touch;
     Vector2 firstPressPos;
     public float m_moveSpeed = 10;
+    float DefaultMoveSpeed;
     float moveStep;
     private Vector3 translation;
     public float Xspeed = 25f, limit;
@@ -18,11 +20,12 @@ public class PlayerController : MonoBehaviour
     public GameObject World;
     public ParticleSystem DustParticle1, DustParticle2;
     public List<People> CollectedPeoples;
+    public Animator m_animator;
 
     private void Start()
     {
-        GetComponentInChildren<Animator>().SetTrigger("HoldRope");
-        moveStep = m_moveSpeed / (float)NeededPeopleCount;
+        DefaultMoveSpeed = m_moveSpeed;
+        moveStep = (m_moveSpeed / 2) / (float)NeededPeopleCount;
     }
 
     void Update()
@@ -82,8 +85,11 @@ public class PlayerController : MonoBehaviour
             other.GetComponent<People>().HoldTheRope();
             CollectedPeoples.Add(other.GetComponent<People>());
 
-            CreateCylinderBetweenPoints(transform.position, new Vector3(SpawnPoints[rand].transform.position.x, .8f, SpawnPoints[rand].transform.position.z), .08f, SpawnPoints[rand].transform);
-            SpawnPoints.Remove(SpawnPoints[rand]);            
+            CreateCylinderBetweenPoints(new Vector3(transform.position.x, transform.position.y + .4f, transform.position.z),
+                new Vector3(SpawnPoints[rand].transform.position.x, .8f, SpawnPoints[rand].transform.position.z),
+                .08f,
+                SpawnPoints[rand].transform);
+            SpawnPoints.Remove(SpawnPoints[rand]);
             currentPeopleCount++;
 
             StartCoroutine(ScaleSpeed(m_moveSpeed, m_moveSpeed - moveStep, 1));
@@ -104,7 +110,7 @@ public class PlayerController : MonoBehaviour
         }
         m_moveSpeed = end;
 
-        if (m_moveSpeed <= 0)
+        if (m_moveSpeed <= DefaultMoveSpeed / 2)
         {
             DustParticle1.Stop();
             DustParticle2.Stop();

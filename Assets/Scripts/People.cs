@@ -10,6 +10,7 @@ public class People : MonoBehaviour
     public void HoldTheRope()
     {
         transform.localPosition = Vector3.zero;
+        transform.rotation = Quaternion.identity;
         foreach (ParticleSystem item in Dusts)
         {
             item.Play();

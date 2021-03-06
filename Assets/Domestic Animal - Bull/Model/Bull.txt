@@ -1,0 +1,19 @@
+0000-0000 binPose
+0001-099 loop Eating
+0100-0143 loop Attack
+0146-0172 loop Walk
+0174-0194 loop Hit Front
+0195-0244 Death
+0246-0269 loop Hit Back
+0271-0283 loop Run
+0284-0297 loop Run Attack
+0299-0359 loop Fight Idle
+0360-0379 loop Hit Right
+0380-0399 loop Hit Left
+0401-0499 loop loop Idle
+0501-0527 loop Walk Back
+0529-0559 loop Attack Leg
+0560-0599 Lie Down
+0600-0699 loop Rest
+0700-0739 Stand Up
+0741-0839 loop Mastticate

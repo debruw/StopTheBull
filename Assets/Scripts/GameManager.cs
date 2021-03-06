@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public int currentLevel = 1;
     int MaxLevelNumber = 10;
     public bool isGameStarted, isGameOver;
+    public PlayerController playerController;
+    public Animator BullAnimator;
 
     #region UI Elements
     public GameObject WinPanel, LosePanel, InGamePanel;
@@ -107,10 +109,12 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-
+    
     public void TapToStartButtonClick()
     {
         isGameStarted = true;
+        playerController.m_animator.SetTrigger("HoldRope");
+        BullAnimator.SetTrigger("Run");
     }
 
     public void VibrateButtonClick()
