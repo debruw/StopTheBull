@@ -17,10 +17,13 @@ public class PlayerController : MonoBehaviour
     public float Xspeed = 25f, limit;
     public GameObject cylinderPrefab; //assumed to be 1m x 1m x 2m default unity cylinder to make calculations easy
     public List<GameObject> SpawnPoints;
+    public List<GameObject> ObiRopes;
+    public GameObject[] Ropes;
     public GameObject World;
     public ParticleSystem DustParticle1, DustParticle2;
     public List<People> CollectedPeoples;
     public Animator m_animator;
+    public GameObject SpawnPointRotater;
 
     private void Start()
     {
@@ -43,6 +46,7 @@ public class PlayerController : MonoBehaviour
         World.transform.position -= Vector3.forward * m_moveSpeed * Time.deltaTime;
 
 #if UNITY_EDITOR
+
         if (Input.GetMouseButton(0))
         {
             translation = new Vector3(0, Input.GetAxis("Mouse X"), 0) * Time.deltaTime * Xspeed;
@@ -82,13 +86,12 @@ public class PlayerController : MonoBehaviour
             Instantiate(particlePuff, SpawnPoints[rand].transform.position, Quaternion.identity);
 
             other.gameObject.transform.parent = SpawnPoints[rand].transform;
+            ObiRopes[rand].SetActive(true);
+            ObiRopes.Remove(ObiRopes[rand]
+                );
             other.GetComponent<People>().HoldTheRope();
             CollectedPeoples.Add(other.GetComponent<People>());
 
-            CreateCylinderBetweenPoints(new Vector3(transform.position.x, transform.position.y + .4f, transform.position.z),
-                new Vector3(SpawnPoints[rand].transform.position.x, .8f, SpawnPoints[rand].transform.position.z),
-                .08f,
-                SpawnPoints[rand].transform);
             SpawnPoints.Remove(SpawnPoints[rand]);
             currentPeopleCount++;
 
@@ -110,27 +113,28 @@ public class PlayerController : MonoBehaviour
         }
         m_moveSpeed = end;
 
+        if (m_moveSpeed <= DefaultMoveSpeed / 4)
+        {
+            GameManager.Instance.BullAnimator.SetTrigger("Walk");
+        }
+
         if (m_moveSpeed <= DefaultMoveSpeed / 2)
         {
+            foreach (GameObject item in Ropes)
+            {
+                item.SetActive(false);
+            }
+            GameManager.Instance.BullAnimator.SetTrigger("Die");
+            m_animator.SetTrigger("Cheer1");
             DustParticle1.Stop();
             DustParticle2.Stop();
             foreach (People item in CollectedPeoples)
             {
                 item.CloseDust();
+                int rand = Random.Range(0, 3);
+                item.m_animator.SetTrigger("Cheer" + rand);
             }
             StartCoroutine(GameManager.Instance.WaitAndGameWin());
-
         }
-    }
-
-    void CreateCylinderBetweenPoints(Vector3 start, Vector3 end, float width, Transform tr)
-    {
-        var offset = end - start;
-        var scale = new Vector3(width, offset.magnitude / 2.0f, width);
-        var position = start + (offset / 2.0f);
-
-        var cylinder = Instantiate(cylinderPrefab, position, Quaternion.identity, tr);
-        cylinder.transform.up = offset;
-        cylinder.transform.localScale = scale;
     }
 }

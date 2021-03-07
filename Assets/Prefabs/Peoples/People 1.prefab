@@ -218,6 +218,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TCP_Female_Character_01A
       objectReference: {fileID: 0}
+    - target: {fileID: 3784200453758973163, guid: 0fc89c22d80a16648827ebc684f0627b,
+        type: 3}
+      propertyPath: m_Name
+      value: TCP_Female_Armature
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0fc89c22d80a16648827ebc684f0627b, type: 3}
 --- !u!4 &6192845472540477159 stripped

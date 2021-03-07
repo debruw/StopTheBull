@@ -213,6 +213,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5988885420621706830, guid: 432bdd090ef32ee4b96e6b5d5093180c,
+        type: 3}
+      propertyPath: m_Name
+      value: TCP_Female_Armature
+      objectReference: {fileID: 0}
     - target: {fileID: 5988885420621706848, guid: 432bdd090ef32ee4b96e6b5d5093180c,
         type: 3}
       propertyPath: m_Name
