@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - People
+  - Bull
   layers:
   - Default
   - TransparentFX

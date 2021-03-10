@@ -7,6 +7,11 @@ public class People : MonoBehaviour
     public ParticleSystem[] Dusts;
     public Animator m_animator;
 
+    private void Start()
+    {
+        m_animator.SetInteger("Idle", Random.Range(0, 5));
+    }
+
     public void HoldTheRope()
     {
         transform.localPosition = Vector3.zero;

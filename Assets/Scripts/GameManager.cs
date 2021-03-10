@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
     public IEnumerator WaitAndGameLose()
     {
         isGameOver = true;
-        SoundManager.Instance.playSound(SoundManager.GameSounds.Lose);
+        //SoundManager.Instance.playSound(SoundManager.GameSounds.Lose);
 
         yield return new WaitForSeconds(1f);
 
@@ -111,10 +111,9 @@ public class GameManager : MonoBehaviour
     }
     
     public void TapToStartButtonClick()
-    {
-        isGameStarted = true;
+    {        
         playerController.m_animator.SetTrigger("HoldRope");
-        BullAnimator.SetTrigger("Run");
+        BullAnimator.SetTrigger("StandUp");
     }
 
     public void VibrateButtonClick()

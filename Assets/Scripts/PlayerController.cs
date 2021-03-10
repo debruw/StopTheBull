@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,7 +12,7 @@ public class PlayerController : MonoBehaviour
     public float m_moveSpeed = 10;
     float DefaultMoveSpeed;
     float moveStep;
-    private Vector3 translation;
+    private Vector3 translation, translation2;
     public float Xspeed = 25f, limit;
     public GameObject cylinderPrefab; //assumed to be 1m x 1m x 2m default unity cylinder to make calculations easy
     public List<GameObject> SpawnPoints;
@@ -23,14 +22,16 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem DustParticle1, DustParticle2;
     public List<People> CollectedPeoples;
     public Animator m_animator;
-    public GameObject SpawnPointRotater;
+    public ParticleSystem[] RoseParticles;
+    float roseParticleTimer, RPTimerRand;
 
     private void Start()
     {
         DefaultMoveSpeed = m_moveSpeed;
         moveStep = (m_moveSpeed / 2) / (float)NeededPeopleCount;
+        RPTimerRand = Random.Range(5, 15);
     }
-
+    public GameObject SpawnPointRotater;
     void Update()
     {
         if (!GameManager.Instance.isGameStarted || GameManager.Instance.isGameOver)
@@ -43,6 +44,18 @@ public class PlayerController : MonoBehaviour
             DustParticle2.Play();
         }
 
+        roseParticleTimer += Time.deltaTime;
+        if (roseParticleTimer >= RPTimerRand)
+        {
+            roseParticleTimer = 0;
+            RPTimerRand = Random.Range(5, 15);
+            foreach (ParticleSystem item in RoseParticles)
+            {
+                item.Play();
+            }
+        }
+
+
         World.transform.position -= Vector3.forward * m_moveSpeed * Time.deltaTime;
 
 #if UNITY_EDITOR
@@ -53,6 +66,11 @@ public class PlayerController : MonoBehaviour
 
             transform.Rotate(-translation);
             transform.localEulerAngles = new Vector3(0, Mathf.Clamp(transform.localEulerAngles.y, 90 - limit, 90 + limit), 0);
+
+            translation2 = new Vector3(0, Input.GetAxis("Mouse X"), 0) * Time.deltaTime * (Xspeed / 2);
+
+            SpawnPointRotater.transform.Rotate(-translation2);
+            SpawnPointRotater.transform.localEulerAngles = new Vector3(0, Mathf.Clamp(SpawnPointRotater.transform.localEulerAngles.y, 90 - limit, 90 + limit), 0);
         }
 
 #elif UNITY_IOS || UNITY_ANDROID
@@ -63,6 +81,7 @@ public class PlayerController : MonoBehaviour
             if (touch.phase == TouchPhase.Moved)
             {
                 transform.localEulerAngles = new Vector3(0, Mathf.Clamp(transform.localEulerAngles.y + touch.deltaPosition.x * /*0.01f*/ Time.deltaTime * Xspeed, 90 - limit, 90 + limit), 0);
+                SpawnPointRotater.transform.localEulerAngles = new Vector3(0, Mathf.Clamp(SpawnPointRotater.transform.localEulerAngles.y + touch.deltaPosition.x * /*0.01f*/ Time.deltaTime * (Xspeed / 2), 90 - limit, 90 + limit), 0);
             }
             else if (touch.phase == TouchPhase.Began)
             {
@@ -95,10 +114,11 @@ public class PlayerController : MonoBehaviour
             SpawnPoints.Remove(SpawnPoints[rand]);
             currentPeopleCount++;
 
-            StartCoroutine(ScaleSpeed(m_moveSpeed, m_moveSpeed - moveStep, 1));
+            StartCoroutine(ScaleSpeed(m_moveSpeed, (m_moveSpeed - moveStep), .5f));
         }
     }
 
+    int randm;
     IEnumerator ScaleSpeed(float start, float end, float time)
     {
         float lastTime = Time.realtimeSinceStartup;
@@ -131,10 +151,28 @@ public class PlayerController : MonoBehaviour
             foreach (People item in CollectedPeoples)
             {
                 item.CloseDust();
-                int rand = Random.Range(0, 3);
-                item.m_animator.SetTrigger("Cheer" + rand);
+                randm = Random.Range(0, 2);
+                Debug.Log(randm);
+                item.m_animator.SetTrigger("Cheer" + randm);
             }
             StartCoroutine(GameManager.Instance.WaitAndGameWin());
+        }
+    }
+
+    public void OnFinishLine()
+    {
+        m_moveSpeed = 0;
+        m_animator.SetTrigger("Fall");
+        DustParticle1.Stop();
+        DustParticle2.Stop();
+        foreach (People item in CollectedPeoples)
+        {
+            item.m_animator.SetTrigger("Fall");
+            item.CloseDust();
+        }
+        foreach (GameObject item in Ropes)
+        {
+            item.SetActive(false);
         }
     }
 }
