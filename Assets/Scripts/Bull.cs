@@ -18,6 +18,11 @@ public class Bull : MonoBehaviour
             m_animator.SetTrigger("Attack");
             throwingBody = other.GetComponent<Rigidbody>();
         }
+        else if (other.CompareTag("Obstacle"))
+        {
+            Debug.Log("111");
+            GetComponent<Rigidbody>().AddForce(new Vector3(0, 3, 0), ForceMode.Impulse);
+        }
     }
 
     public void ThrowBody()

@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get { return _instance; } }
 
     public int currentLevel = 1;
-    int MaxLevelNumber = 10;
+    int MaxLevelNumber = 1;
     public bool isGameStarted, isGameOver;
     public PlayerController playerController;
     public Animator BullAnimator;

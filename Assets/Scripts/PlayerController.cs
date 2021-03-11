@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
         if (roseParticleTimer >= RPTimerRand)
         {
             roseParticleTimer = 0;
-            RPTimerRand = Random.Range(5, 15);
+            RPTimerRand = Random.Range(5, 10);
             foreach (ParticleSystem item in RoseParticles)
             {
                 item.Play();
