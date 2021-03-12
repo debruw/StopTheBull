@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
         }
         currentLevel = PlayerPrefs.GetInt("LevelId");
         LevelText.text = "Level " + currentLevel;
+        Application.targetFrameRate = 60;
     }
 
     public IEnumerator WaitAndGameWin()

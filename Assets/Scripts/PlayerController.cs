@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
         RPTimerRand = Random.Range(5, 15);
     }
     public GameObject SpawnPointRotater;
+    bool isMovementReleased;
     void Update()
     {
         if (!GameManager.Instance.isGameStarted || GameManager.Instance.isGameOver)
@@ -80,8 +81,13 @@ public class PlayerController : MonoBehaviour
             touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Moved)
             {
-                transform.localEulerAngles = new Vector3(0, Mathf.Clamp(transform.localEulerAngles.y + touch.deltaPosition.x * /*0.01f*/ Time.deltaTime * Xspeed, 90 - limit, 90 + limit), 0);
-                SpawnPointRotater.transform.localEulerAngles = new Vector3(0, Mathf.Clamp(SpawnPointRotater.transform.localEulerAngles.y + touch.deltaPosition.x * /*0.01f*/ Time.deltaTime * (Xspeed / 2), 90 - limit, 90 + limit), 0);
+                isMovementReleased = false;
+                transform.localEulerAngles = new Vector3(0, Mathf.Clamp(transform.localEulerAngles.y + touch.deltaPosition.x * 0.05f * Time.deltaTime * -Xspeed, 90 - limit, 90 + limit), 0);
+                SpawnPointRotater.transform.localEulerAngles = new Vector3(0, Mathf.Clamp(SpawnPointRotater.transform.localEulerAngles.y + touch.deltaPosition.x * 0.05f * Time.deltaTime * (-Xspeed / 2), 90 - limit, 90 + limit), 0);
+            }
+            else if (touch.phase == TouchPhase.Ended)
+            {
+                isMovementReleased = true;
             }
             else if (touch.phase == TouchPhase.Began)
             {

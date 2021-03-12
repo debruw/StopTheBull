@@ -26,7 +26,7 @@ namespace Obi
         }
         public void DecreaseReferenceCount()
         {
-            if (--refCount < 0 && gameObject != null)
+            if (--refCount <= 0 && gameObject != null)
                 DestroyImmediate(gameObject);
         }
 
