@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PolygonCity_Mat_01_A
-  m_Shader: {fileID: 4800000, guid: ccfc7d68845db8341944b3091b59be55, type: 3}
+  m_Shader: {fileID: 4800000, guid: c25f048f92690b04ca679b2ddb06ac06, type: 3}
   m_ShaderKeywords: _EMISSION _METALLICGLOSSMAP _NORMALMAP _SEGMENTED_ON
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0

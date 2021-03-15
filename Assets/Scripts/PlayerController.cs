@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public List<GameObject> SpawnPoints;
     public List<GameObject> ObiRopes;
     public GameObject[] Ropes;
+    public GameObject[] RopeParents;
     public GameObject World;
     public ParticleSystem DustParticle1, DustParticle2;
     public List<People> CollectedPeoples;
@@ -57,7 +59,7 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        World.transform.position -= Vector3.forward * m_moveSpeed * Time.deltaTime;
+        World.transform.position += Vector3.forward * m_moveSpeed * Time.deltaTime;
 
 #if UNITY_EDITOR
 
@@ -122,6 +124,12 @@ public class PlayerController : MonoBehaviour
 
             StartCoroutine(ScaleSpeed(m_moveSpeed, (m_moveSpeed - moveStep), .5f));
         }
+        else if (other.CompareTag("Obstacle"))
+        {
+            OnFinishLine();
+            GameManager.Instance.BullAnimator.gameObject.transform.DOMoveZ(
+                GameManager.Instance.BullAnimator.gameObject.transform.position.z + 100, 10);
+        }
     }
 
     int randm;
@@ -146,7 +154,7 @@ public class PlayerController : MonoBehaviour
 
         if (m_moveSpeed <= DefaultMoveSpeed / 2)
         {
-            foreach (GameObject item in Ropes)
+            foreach (GameObject item in RopeParents)
             {
                 item.SetActive(false);
             }
@@ -176,7 +184,7 @@ public class PlayerController : MonoBehaviour
             item.m_animator.SetTrigger("Fall");
             item.CloseDust();
         }
-        foreach (GameObject item in Ropes)
+        foreach (GameObject item in RopeParents)
         {
             item.SetActive(false);
         }

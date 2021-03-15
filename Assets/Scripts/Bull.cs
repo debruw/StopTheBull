@@ -10,18 +10,19 @@ public class Bull : MonoBehaviour
     {
         GameManager.Instance.isGameStarted = true;
     }
-
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("People"))
         {
             m_animator.SetTrigger("Attack");
             throwingBody = other.GetComponent<Rigidbody>();
+            throwingBody.GetComponent<People>().CloseDust();
         }
         else if (other.CompareTag("Obstacle"))
         {
-            Debug.Log("111");
-            GetComponent<Rigidbody>().AddForce(new Vector3(0, 3, 0), ForceMode.Impulse);
+            GetComponent<Rigidbody>().AddForce(new Vector3(0, 3, 2), ForceMode.Impulse);
+            
         }
     }
 

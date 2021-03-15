@@ -5,6 +5,7 @@ using UnityEngine;
 public class People : MonoBehaviour
 {
     public ParticleSystem[] Dusts;
+    public GameObject[] Trails;
     public Animator m_animator;
 
     private void Start()
@@ -20,7 +21,10 @@ public class People : MonoBehaviour
         {
             item.Play();
         }
-
+        foreach (GameObject item in Trails)
+        {
+            item.SetActive(true);
+        }
         GetComponent<Collider>().enabled = false;
         m_animator.SetTrigger("HoldRope");
     }
@@ -30,6 +34,10 @@ public class People : MonoBehaviour
         foreach (ParticleSystem item in Dusts)
         {
             item.Stop();
+        }
+        foreach (GameObject item in Trails)
+        {
+            item.SetActive(false);
         }
     }
 }
