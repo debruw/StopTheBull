@@ -32,7 +32,9 @@ public class PlayerController : MonoBehaviour
         DefaultMoveSpeed = m_moveSpeed;
         moveStep = (m_moveSpeed / 2) / (float)NeededPeopleCount;
         RPTimerRand = Random.Range(5, 15);
+        m_animator.SetInteger("Idle", 1);
     }
+
     public GameObject SpawnPointRotater;
     bool isMovementReleased;
     void Update()
@@ -60,6 +62,7 @@ public class PlayerController : MonoBehaviour
 
 
         World.transform.position += Vector3.forward * m_moveSpeed * Time.deltaTime;
+        GameManager.Instance.UpdateLevelStateImage();
 
 #if UNITY_EDITOR
 
@@ -121,6 +124,7 @@ public class PlayerController : MonoBehaviour
 
             SpawnPoints.Remove(SpawnPoints[rand]);
             currentPeopleCount++;
+            GameManager.Instance.UpdateCurrentPeopleCount(currentPeopleCount);
 
             StartCoroutine(ScaleSpeed(m_moveSpeed, (m_moveSpeed - moveStep), .5f));
         }

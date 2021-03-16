@@ -21,8 +21,7 @@ public class Bull : MonoBehaviour
         }
         else if (other.CompareTag("Obstacle"))
         {
-            GetComponent<Rigidbody>().AddForce(new Vector3(0, 3, 2), ForceMode.Impulse);
-            
+            //GetComponent<Rigidbody>().AddForce(new Vector3(0, 3, 2), ForceMode.Impulse);            
         }
     }
 

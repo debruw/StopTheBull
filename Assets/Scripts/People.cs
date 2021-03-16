@@ -10,7 +10,7 @@ public class People : MonoBehaviour
 
     private void Start()
     {
-        m_animator.SetInteger("Idle", Random.Range(0, 5));
+        m_animator.SetInteger("Idle", Random.Range(0, 4));
     }
 
     public void HoldTheRope()

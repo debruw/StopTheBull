@@ -6,6 +6,6 @@ public class CheeringPeople : MonoBehaviour
 {
     private void Start()
     {
-        GetComponent<Animator>().SetInteger("Cheer", Random.Range(0, 3));
+        GetComponent<Animator>().SetTrigger("Cheer" + Random.Range(0, 2));
     }
 }

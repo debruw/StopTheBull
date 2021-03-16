@@ -16,12 +16,15 @@ public class GameManager : MonoBehaviour
     public bool isGameStarted, isGameOver;
     public PlayerController playerController;
     public Animator BullAnimator;
+    public Transform FinishTransform, BullTransform;
 
     #region UI Elements
     public GameObject WinPanel, LosePanel, InGamePanel;
     public Button VibrationButton, TapToStartButton;
     public Sprite on, off;
     public Text LevelText;
+    public Text CurrentPeopleCountText, NeededPeopleCountText;
+    public Image LevelStateImage; float maxAmount;
     #endregion
 
     private void Awake()
@@ -54,6 +57,19 @@ public class GameManager : MonoBehaviour
         currentLevel = PlayerPrefs.GetInt("LevelId");
         LevelText.text = "Level " + currentLevel;
         Application.targetFrameRate = 60;
+        maxAmount = Vector3.Distance(FinishTransform.position, BullTransform.position);
+        UpdateLevelStateImage();
+        NeededPeopleCountText.text = playerController.NeededPeopleCount.ToString();
+    }
+
+    public void UpdateLevelStateImage()
+    {
+        Debug.Log(Vector3.Distance(FinishTransform.position, BullTransform.position));
+        LevelStateImage.fillAmount = ((maxAmount - Vector3.Distance(FinishTransform.position, BullTransform.position)) / maxAmount);
+    }
+    public void UpdateCurrentPeopleCount(int count)
+    {
+        CurrentPeopleCountText.text = count.ToString();
     }
 
     public IEnumerator WaitAndGameWin()
@@ -110,9 +126,9 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    
+
     public void TapToStartButtonClick()
-    {        
+    {
         playerController.m_animator.SetTrigger("HoldRope");
         BullAnimator.SetTrigger("StandUp");
     }
