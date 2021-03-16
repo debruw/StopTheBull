@@ -169,8 +169,7 @@ public class PlayerController : MonoBehaviour
             foreach (People item in CollectedPeoples)
             {
                 item.CloseDust();
-                randm = Random.Range(0, 2);
-                Debug.Log(randm);
+                randm = Random.Range(1, 3);
                 item.m_animator.SetTrigger("Cheer" + randm);
             }
             StartCoroutine(GameManager.Instance.WaitAndGameWin());

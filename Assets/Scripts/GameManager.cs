@@ -64,7 +64,6 @@ public class GameManager : MonoBehaviour
 
     public void UpdateLevelStateImage()
     {
-        Debug.Log(Vector3.Distance(FinishTransform.position, BullTransform.position));
         LevelStateImage.fillAmount = ((maxAmount - Vector3.Distance(FinishTransform.position, BullTransform.position)) / maxAmount);
     }
     public void UpdateCurrentPeopleCount(int count)
