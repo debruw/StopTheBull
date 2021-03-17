@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get { return _instance; } }
 
     public int currentLevel = 1;
-    int MaxLevelNumber = 1;
+    int MaxLevelNumber = 3;
     public bool isGameStarted, isGameOver;
     public PlayerController playerController;
     public Animator BullAnimator;
@@ -23,8 +23,9 @@ public class GameManager : MonoBehaviour
     public Button VibrationButton, TapToStartButton;
     public Sprite on, off;
     public Text LevelText;
-    public Text CurrentPeopleCountText, NeededPeopleCountText;
-    public Image LevelStateImage; float maxAmount;
+    public Image LevelStateImage, PeopleSlider; float maxAmount;
+    public GameObject PlayText, ContinueText;
+    public GameObject PeopleBarParent;
     #endregion
 
     private void Awake()
@@ -54,26 +55,37 @@ public class GameManager : MonoBehaviour
                 VibrationButton.GetComponent<Image>().sprite = off;
             }
         }
+
+        if (PlayerPrefs.GetInt("FromMenu") == 1)
+        {
+            ContinueText.SetActive(false);
+            PlayerPrefs.SetInt("FromMenu", 0);
+        }
+        else
+        {
+            PlayText.SetActive(false);
+        }
         currentLevel = PlayerPrefs.GetInt("LevelId");
-        LevelText.text = "Level " + currentLevel;
+        LevelText.text = currentLevel.ToString();
         Application.targetFrameRate = 60;
         maxAmount = Vector3.Distance(FinishTransform.position, BullTransform.position);
         UpdateLevelStateImage();
-        NeededPeopleCountText.text = playerController.NeededPeopleCount.ToString();
     }
 
     public void UpdateLevelStateImage()
     {
         LevelStateImage.fillAmount = ((maxAmount - Vector3.Distance(FinishTransform.position, BullTransform.position)) / maxAmount);
     }
-    public void UpdateCurrentPeopleCount(int count)
+
+    public void UpdateCurrentPeopleCount(float count)
     {
-        CurrentPeopleCountText.text = count.ToString();
+        PeopleSlider.fillAmount = (float)((playerController.NeededPeopleCount - (playerController.NeededPeopleCount - count)) / playerController.NeededPeopleCount);
     }
 
     public IEnumerator WaitAndGameWin()
     {
         isGameOver = true;
+        PeopleBarParent.SetActive(false);
         //SoundManager.Instance.StopAllSounds();
         //SoundManager.Instance.playSound(SoundManager.GameSounds.Win);
 
@@ -90,6 +102,7 @@ public class GameManager : MonoBehaviour
     public IEnumerator WaitAndGameLose()
     {
         isGameOver = true;
+        PeopleBarParent.SetActive(false);
         //SoundManager.Instance.playSound(SoundManager.GameSounds.Lose);
 
         yield return new WaitForSeconds(1f);

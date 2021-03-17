@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3832406052379847155}
-  - component: {fileID: 3832406052449841236}
   - component: {fileID: -224667879659351225}
   - component: {fileID: -3162060818884388051}
+  - component: {fileID: -663524905109694148}
   m_Layer: 0
   m_Name: People 4
   m_TagString: People
@@ -35,20 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &3832406052449841236
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3832406052380121293}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.3564039
-  m_Height: 1.8310325
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0.9211191, z: -0.008815765}
 --- !u!114 &-224667879659351225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,8 +68,21 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 8
   m_CollisionDetection: 0
+--- !u!65 &-663524905109694148
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3832406052380121293}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.8831325, z: 1}
+  m_Center: {x: 0, y: 0.9288118, z: 0}
 --- !u!1001 &967989610934274269
 PrefabInstance:
   m_ObjectHideFlags: 0

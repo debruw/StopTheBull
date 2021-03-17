@@ -109,31 +109,52 @@ public class PlayerController : MonoBehaviour
     ParticleSystem[] Dusts;
     private void OnTriggerEnter(Collider other)
     {
+        if (!GameManager.Instance.isGameStarted || GameManager.Instance.isGameOver)
+        {
+            return;
+        }
         if (other.CompareTag("People"))
         {
-            rand = Random.Range(0, SpawnPoints.Count);
-            Instantiate(particlePuff, other.transform.position, Quaternion.identity);
-            Instantiate(particlePuff, SpawnPoints[rand].transform.position, Quaternion.identity);
+            if (!other.GetComponent<People>().isTaken)
+            {
+                rand = Random.Range(0, SpawnPoints.Count);
+                Instantiate(particlePuff, other.transform.position, Quaternion.identity);
+                Instantiate(particlePuff, SpawnPoints[rand].transform.position, Quaternion.identity);
 
-            other.gameObject.transform.parent = SpawnPoints[rand].transform;
-            ObiRopes[rand].SetActive(true);
-            ObiRopes.Remove(ObiRopes[rand]
-                );
-            other.GetComponent<People>().HoldTheRope();
-            CollectedPeoples.Add(other.GetComponent<People>());
+                other.gameObject.transform.parent = SpawnPoints[rand].transform;
+                ObiRopes[rand].SetActive(true);
+                ObiRopes.Remove(ObiRopes[rand]
+                    );
+                other.GetComponent<People>().HoldTheRope(rand);
+                CollectedPeoples.Add(other.GetComponent<People>());
 
-            SpawnPoints.Remove(SpawnPoints[rand]);
-            currentPeopleCount++;
-            GameManager.Instance.UpdateCurrentPeopleCount(currentPeopleCount);
+                SpawnPoints.Remove(SpawnPoints[rand]);
+                currentPeopleCount++;
+                GameManager.Instance.UpdateCurrentPeopleCount(currentPeopleCount);
 
-            StartCoroutine(ScaleSpeed(m_moveSpeed, (m_moveSpeed - moveStep), .5f));
+                StartCoroutine(ScaleSpeed(m_moveSpeed, (m_moveSpeed - moveStep), .5f)); 
+            }
         }
         else if (other.CompareTag("Obstacle"))
         {
             OnFinishLine();
             GameManager.Instance.BullAnimator.gameObject.transform.DOMoveZ(
                 GameManager.Instance.BullAnimator.gameObject.transform.position.z + 100, 10);
+            StartCoroutine(GameManager.Instance.WaitAndGameLose());
         }
+    }
+
+    public void AddRopeBack(int rand)
+    {
+        ObiRopes.Add(Ropes[rand]);
+    }
+
+    public void LosePeople()
+    {
+        currentPeopleCount--;
+        GameManager.Instance.UpdateCurrentPeopleCount(currentPeopleCount);
+
+        StartCoroutine(ScaleSpeed(m_moveSpeed, (m_moveSpeed + moveStep), .5f));
     }
 
     int randm;
@@ -178,6 +199,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnFinishLine()
     {
+        GameManager.Instance.FinishTransform.gameObject.SetActive(false);
         m_moveSpeed = 0;
         m_animator.SetTrigger("Fall");
         DustParticle1.Stop();
