@@ -8,17 +8,17 @@ public class People : MonoBehaviour
     public GameObject[] Trails;
     public Animator m_animator;
     public bool isTaken;
-    int myRopeNumber;
+    public GameObject myRope;
 
     private void Start()
     {
         m_animator.SetInteger("Idle", Random.Range(0, 4));
     }
 
-    public void HoldTheRope(int rand)
+    public void HoldTheRope(GameObject rand)
     {
         isTaken = true;
-        myRopeNumber = rand;
+        myRope = rand;
         transform.localPosition = Vector3.zero;
         transform.rotation = Quaternion.identity;
         foreach (ParticleSystem item in Dusts)
@@ -49,13 +49,12 @@ public class People : MonoBehaviour
     {
         if (other.CompareTag("Obstacle"))
         {
-            Debug.Log(myRopeNumber);
             transform.parent = null;
-            GameManager.Instance.playerController.Ropes[myRopeNumber].SetActive(false);
+            GameManager.Instance.playerController.AddRopeBack(myRope);
+            myRope.SetActive(false);
             m_animator.SetTrigger("Fall");
             GameManager.Instance.playerController.CollectedPeoples.Remove(this);
-            GameManager.Instance.playerController.LosePeople();
-            GameManager.Instance.playerController.AddRopeBack(myRopeNumber);
+            GameManager.Instance.playerController.LosePeople();            
             Destroy(gameObject, 3);
         }
     }

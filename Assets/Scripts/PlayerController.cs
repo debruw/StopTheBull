@@ -18,7 +18,6 @@ public class PlayerController : MonoBehaviour
     public GameObject cylinderPrefab; //assumed to be 1m x 1m x 2m default unity cylinder to make calculations easy
     public List<GameObject> SpawnPoints;
     public List<GameObject> ObiRopes;
-    public GameObject[] Ropes;
     public GameObject[] RopeParents;
     public GameObject World;
     public ParticleSystem DustParticle1, DustParticle2;
@@ -123,9 +122,10 @@ public class PlayerController : MonoBehaviour
 
                 other.gameObject.transform.parent = SpawnPoints[rand].transform;
                 ObiRopes[rand].SetActive(true);
+                
+                other.GetComponent<People>().HoldTheRope(ObiRopes[rand]);
                 ObiRopes.Remove(ObiRopes[rand]
                     );
-                other.GetComponent<People>().HoldTheRope(rand);
                 CollectedPeoples.Add(other.GetComponent<People>());
 
                 SpawnPoints.Remove(SpawnPoints[rand]);
@@ -138,15 +138,16 @@ public class PlayerController : MonoBehaviour
         else if (other.CompareTag("Obstacle"))
         {
             OnFinishLine();
+            GameManager.Instance.FinishTransform.gameObject.SetActive(false);
             GameManager.Instance.BullAnimator.gameObject.transform.DOMoveZ(
                 GameManager.Instance.BullAnimator.gameObject.transform.position.z + 100, 10);
             StartCoroutine(GameManager.Instance.WaitAndGameLose());
         }
     }
 
-    public void AddRopeBack(int rand)
+    public void AddRopeBack(GameObject rand)
     {
-        ObiRopes.Add(Ropes[rand]);
+        ObiRopes.Add(rand);
     }
 
     public void LosePeople()
@@ -199,7 +200,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnFinishLine()
     {
-        GameManager.Instance.FinishTransform.gameObject.SetActive(false);
+        
         m_moveSpeed = 0;
         m_animator.SetTrigger("Fall");
         DustParticle1.Stop();
