@@ -16,9 +16,9 @@ public class SoundManager : MonoBehaviour
     {
         Lose,
         Win,
-        Collect,
         Hit,
-        WrongDriplet
+        Pick,
+        Pop
     }
 
     private void Awake()

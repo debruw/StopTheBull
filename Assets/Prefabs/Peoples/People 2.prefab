@@ -54,6 +54,8 @@ MonoBehaviour:
   - {fileID: 3785106631616103352}
   - {fileID: 3459347581615862683}
   m_animator: {fileID: 1275071756094084899}
+  isTaken: 0
+  myRope: {fileID: 0}
 --- !u!54 &-7760130636693097782
 Rigidbody:
   m_ObjectHideFlags: 0

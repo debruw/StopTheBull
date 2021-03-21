@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get { return _instance; } }
 
     public int currentLevel = 1;
-    int MaxLevelNumber = 3;
+    int MaxLevelNumber = 10;
     public bool isGameStarted, isGameOver;
     public PlayerController playerController;
     public Animator BullAnimator;
@@ -23,9 +23,11 @@ public class GameManager : MonoBehaviour
     public Button VibrationButton, TapToStartButton;
     public Sprite on, off;
     public Text LevelText;
-    public Image LevelStateImage, PeopleSlider; float maxAmount;
+    public Image LevelStateImage; float maxAmount;
     public GameObject PlayText, ContinueText;
     public GameObject PeopleBarParent;
+    public Text CurrentPeopleCount, NeededPeopleCount;
+    public GameObject tutorialCanvas, tutorialCanvas2;
     #endregion
 
     private void Awake()
@@ -67,6 +69,8 @@ public class GameManager : MonoBehaviour
         }
         currentLevel = PlayerPrefs.GetInt("LevelId");
         LevelText.text = currentLevel.ToString();
+        NeededPeopleCount.text = playerController.NeededPeopleCount.ToString();
+        CurrentPeopleCount.text = "0";
         Application.targetFrameRate = 60;
         maxAmount = Vector3.Distance(FinishTransform.position, BullTransform.position);
         UpdateLevelStateImage();
@@ -77,22 +81,22 @@ public class GameManager : MonoBehaviour
         LevelStateImage.fillAmount = ((maxAmount - Vector3.Distance(FinishTransform.position, BullTransform.position)) / maxAmount);
     }
 
-    public void UpdateCurrentPeopleCount(float count)
+    public void UpdateCurrentPeopleCount(int count)
     {
-        PeopleSlider.fillAmount = (float)((playerController.NeededPeopleCount - (playerController.NeededPeopleCount - count)) / playerController.NeededPeopleCount);
+        CurrentPeopleCount.text = count.ToString();
     }
 
     public IEnumerator WaitAndGameWin()
     {
         isGameOver = true;
         PeopleBarParent.SetActive(false);
-        //SoundManager.Instance.StopAllSounds();
-        //SoundManager.Instance.playSound(SoundManager.GameSounds.Win);
+        SoundManager.Instance.StopAllSounds();
+        SoundManager.Instance.playSound(SoundManager.GameSounds.Win);
 
         yield return new WaitForSeconds(1f);
 
-        //if (PlayerPrefs.GetInt("VIBRATION") == 1)
-        //    TapticManager.Impact(ImpactFeedback.Light);
+        if (PlayerPrefs.GetInt("VIBRATION") == 1)
+            TapticManager.Impact(ImpactFeedback.Light);
 
         currentLevel++;
         PlayerPrefs.SetInt("LevelId", currentLevel);
@@ -103,12 +107,12 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
         PeopleBarParent.SetActive(false);
-        //SoundManager.Instance.playSound(SoundManager.GameSounds.Lose);
+        SoundManager.Instance.playSound(SoundManager.GameSounds.Lose);
 
         yield return new WaitForSeconds(1f);
 
         if (PlayerPrefs.GetInt("VIBRATION") == 1)
-            TapticManager.Impact(ImpactFeedback.Light);
+            TapticManager.Impact(ImpactFeedback.Medium);
 
         LosePanel.SetActive(true);
     }
@@ -143,6 +147,10 @@ public class GameManager : MonoBehaviour
     {
         playerController.m_animator.SetTrigger("HoldRope");
         BullAnimator.SetTrigger("StandUp");
+        if (currentLevel == 1)
+        {
+            tutorialCanvas.SetActive(true);
+        }
     }
 
     public void VibrateButtonClick()
@@ -158,7 +166,7 @@ public class GameManager : MonoBehaviour
             VibrationButton.GetComponent<Image>().sprite = on;
         }
 
-        //if (PlayerPrefs.GetInt("VIBRATION") == 1)
-        //    TapticManager.Impact(ImpactFeedback.Light);
+        if (PlayerPrefs.GetInt("VIBRATION") == 1)
+            TapticManager.Impact(ImpactFeedback.Light);
     }
 }

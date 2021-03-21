@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using TapticPlugin;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -15,7 +16,6 @@ public class PlayerController : MonoBehaviour
     float moveStep;
     private Vector3 translation, translation2;
     public float Xspeed = 25f, limit;
-    public GameObject cylinderPrefab; //assumed to be 1m x 1m x 2m default unity cylinder to make calculations easy
     public List<GameObject> SpawnPoints;
     public List<GameObject> ObiRopes;
     public GameObject[] RopeParents;
@@ -52,11 +52,13 @@ public class PlayerController : MonoBehaviour
         if (roseParticleTimer >= RPTimerRand)
         {
             roseParticleTimer = 0;
-            RPTimerRand = Random.Range(5, 10);
+            RPTimerRand = Random.Range(3, 6);
             foreach (ParticleSystem item in RoseParticles)
             {
                 item.Play();
+                SoundManager.Instance.playSound(SoundManager.GameSounds.Pop);
             }
+            
         }
 
 
@@ -67,6 +69,12 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
+            if (GameManager.Instance.currentLevel == 1 && GameManager.Instance.tutorialCanvas.activeSelf)
+            {
+                GameManager.Instance.tutorialCanvas.SetActive(false);
+                GameManager.Instance.tutorialCanvas2.SetActive(true);
+                Destroy(GameManager.Instance.tutorialCanvas2, 3);
+            }
             translation = new Vector3(0, Input.GetAxis("Mouse X"), 0) * Time.deltaTime * Xspeed;
 
             transform.Rotate(-translation);
@@ -82,6 +90,12 @@ public class PlayerController : MonoBehaviour
 
         if (Input.touchCount > 0)
         {
+            if (GameManager.Instance.currentLevel == 1 && GameManager.Instance.tutorialCanvas.activeSelf)
+            {
+                GameManager.Instance.tutorialCanvas.SetActive(false);
+                GameManager.Instance.tutorialCanvas2.SetActive(true);
+                Destroy(GameManager.Instance.tutorialCanvas2, 3);
+            }
             touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Moved)
             {
@@ -122,7 +136,7 @@ public class PlayerController : MonoBehaviour
 
                 other.gameObject.transform.parent = SpawnPoints[rand].transform;
                 ObiRopes[rand].SetActive(true);
-                
+
                 other.GetComponent<People>().HoldTheRope(ObiRopes[rand]);
                 ObiRopes.Remove(ObiRopes[rand]
                     );
@@ -131,8 +145,11 @@ public class PlayerController : MonoBehaviour
                 SpawnPoints.Remove(SpawnPoints[rand]);
                 currentPeopleCount++;
                 GameManager.Instance.UpdateCurrentPeopleCount(currentPeopleCount);
+                if (PlayerPrefs.GetInt("VIBRATION") == 1)
+                    TapticManager.Impact(ImpactFeedback.Light);
+                SoundManager.Instance.playSound(SoundManager.GameSounds.Pick);
 
-                StartCoroutine(ScaleSpeed(m_moveSpeed, (m_moveSpeed - moveStep), .5f)); 
+                StartCoroutine(ScaleSpeed(m_moveSpeed, (m_moveSpeed - moveStep), .5f));
             }
         }
         else if (other.CompareTag("Obstacle"))
@@ -200,7 +217,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnFinishLine()
     {
-        
+
         m_moveSpeed = 0;
         m_animator.SetTrigger("Fall");
         DustParticle1.Stop();

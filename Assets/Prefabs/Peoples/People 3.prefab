@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3832406052379847155}
   - component: {fileID: -224667879659351225}
-  - component: {fileID: -7995669095039610244}
-  - component: {fileID: -678644791698768622}
+  - component: {fileID: 1415068829520056922}
+  - component: {fileID: 7168630210714317795}
   m_Layer: 0
   m_Name: People 3
   m_TagString: People
@@ -54,7 +54,9 @@ MonoBehaviour:
   - {fileID: 3785106631616103352}
   - {fileID: 3459347581615862683}
   m_animator: {fileID: 1151240075072971950}
---- !u!54 &-7995669095039610244
+  isTaken: 0
+  myRope: {fileID: 0}
+--- !u!54 &1415068829520056922
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -70,7 +72,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 8
   m_CollisionDetection: 0
---- !u!65 &-678644791698768622
+--- !u!65 &7168630210714317795
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
