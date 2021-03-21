@@ -1537,6 +1537,34 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!64 &3728946379003224484
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3728946378913847560}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 43379027713151126, guid: b6790cc5d28edd94a965e002d8422428, type: 2}
+--- !u!64 &3728946379003224485
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3728946378913847560}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 43257271686295472, guid: b6790cc5d28edd94a965e002d8422428, type: 2}
 --- !u!1 &3728946378982328663
 GameObject:
   m_ObjectHideFlags: 0
@@ -1631,34 +1659,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!64 &3728946379003224484
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3728946378913847560}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 43379027713151126, guid: b6790cc5d28edd94a965e002d8422428, type: 2}
---- !u!64 &3728946379003224485
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3728946378913847560}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 43257271686295472, guid: b6790cc5d28edd94a965e002d8422428, type: 2}
 --- !u!1 &3728946379083229832
 GameObject:
   m_ObjectHideFlags: 0
@@ -79397,41 +79397,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3728946379146452296}
     m_Modifications:
-    - target: {fileID: 102536, guid: 0383b854a926f1643b20f9c7cdb2e4de, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: 108520, guid: 0383b854a926f1643b20f9c7cdb2e4de, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: 125712, guid: 0383b854a926f1643b20f9c7cdb2e4de, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 18
-      objectReference: {fileID: 0}
     - target: {fileID: 127632, guid: 0383b854a926f1643b20f9c7cdb2e4de, type: 3}
       propertyPath: m_Name
       value: SM_Veh_Car_Small_18
-      objectReference: {fileID: 0}
-    - target: {fileID: 127632, guid: 0383b854a926f1643b20f9c7cdb2e4de, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: 135354, guid: 0383b854a926f1643b20f9c7cdb2e4de, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: 139350, guid: 0383b854a926f1643b20f9c7cdb2e4de, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: 175114, guid: 0383b854a926f1643b20f9c7cdb2e4de, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: 187636, guid: 0383b854a926f1643b20f9c7cdb2e4de, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 411938, guid: 0383b854a926f1643b20f9c7cdb2e4de, type: 3}
       propertyPath: m_LocalPosition.x

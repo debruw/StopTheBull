@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
                 item.Play();
                 SoundManager.Instance.playSound(SoundManager.GameSounds.Pop);
             }
-            
+
         }
 
 
@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
                 Instantiate(particlePuff, SpawnPoints[rand].transform.position, Quaternion.identity);
 
                 other.gameObject.transform.parent = SpawnPoints[rand].transform;
-                ObiRopes[rand].SetActive(true);
+                ObiRopes[rand].GetComponent<MeshRenderer>().enabled = true;
 
                 other.GetComponent<People>().HoldTheRope(ObiRopes[rand]);
                 ObiRopes.Remove(ObiRopes[rand]
@@ -172,7 +172,7 @@ public class PlayerController : MonoBehaviour
         currentPeopleCount--;
         GameManager.Instance.UpdateCurrentPeopleCount(currentPeopleCount);
 
-        StartCoroutine(ScaleSpeed(m_moveSpeed, (m_moveSpeed + moveStep), .5f));
+        StartCoroutine(ScaleSpeed(m_moveSpeed, (m_moveSpeed + moveStep), .1f));
     }
 
     int randm;
@@ -195,7 +195,7 @@ public class PlayerController : MonoBehaviour
             GameManager.Instance.BullAnimator.SetTrigger("Walk");
         }
 
-        if (m_moveSpeed <= DefaultMoveSpeed / 2)
+        if (m_moveSpeed <= DefaultMoveSpeed / 2 || currentPeopleCount == NeededPeopleCount)
         {
             foreach (GameObject item in RopeParents)
             {

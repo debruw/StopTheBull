@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
         PeopleBarParent.SetActive(false);
+        DestroyImmediate(BullAnimator.gameObject.GetComponentInParent<AutoMover>());
         SoundManager.Instance.StopAllSounds();
         SoundManager.Instance.playSound(SoundManager.GameSounds.Win);
 
@@ -107,6 +108,7 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
         PeopleBarParent.SetActive(false);
+        Destroy(BullAnimator.gameObject.GetComponentInParent<AutoMover>());
         SoundManager.Instance.playSound(SoundManager.GameSounds.Lose);
 
         yield return new WaitForSeconds(1f);
@@ -147,6 +149,7 @@ public class GameManager : MonoBehaviour
     {
         playerController.m_animator.SetTrigger("HoldRope");
         BullAnimator.SetTrigger("StandUp");
+        BullAnimator.gameObject.GetComponentInParent<AutoMover>().enabled = true;
         if (currentLevel == 1)
         {
             tutorialCanvas.SetActive(true);

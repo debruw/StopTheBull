@@ -10,7 +10,7 @@ public class Bull : MonoBehaviour
     {
         GameManager.Instance.isGameStarted = true;
     }
-    
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("People"))
@@ -21,7 +21,7 @@ public class Bull : MonoBehaviour
         }
         else if (other.CompareTag("Obstacle"))
         {
-            //GetComponent<Rigidbody>().AddForce(new Vector3(0, 3, 2), ForceMode.Impulse);            
+            m_animator.SetTrigger("Attack");
         }
     }
 
@@ -29,7 +29,8 @@ public class Bull : MonoBehaviour
     {
         if (throwingBody != null)
         {
-            throwingBody.AddForce(0, 10, 20, ForceMode.VelocityChange);
+            throwingBody.gameObject.GetComponent<People>().OpenRagdoll();            
+            Destroy(throwingBody, 3);
             throwingBody = null;
         }
     }
