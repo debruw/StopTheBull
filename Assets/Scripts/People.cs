@@ -23,6 +23,7 @@ public class People : MonoBehaviour
     public void OpenRagdoll()
     {
         m_animator.enabled = false;
+        GetComponent<Collider>().enabled = false;
         foreach (Collider item in ragdollcollies)
         {
             item.enabled = true;
